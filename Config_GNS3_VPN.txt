@@ -1,0 +1,130 @@
+- Configuration de base de routeur 1 :
+
+enable
+configure terminal
+hostname Routeur1
+interface FastEthernet 0/0
+no shutdown
+ip address 10.0.0.254 255.0.0.0
+ip nat inside
+exit
+interface FastEthernet 0/1
+no shutdown
+ip address 101.0.0.253 255.0.0.0
+ip nat outside
+exit
+ip route 0.0.0.0 0.0.0.0 101.0.0.254
+do wr
+access-list 100 deny ip 10.0.0.0 0.255.255.255 30.0.0.0 0.255.255.255
+access-list 100 permit ip 10.0.0.0 0.255.255.255 any
+ip nat inside source list 100 interface Serial 0/0/0 overload
+do wr
+
+- Configuration de base de routeur 2 :
+
+enable
+configure terminal
+hostname Routeur2
+interface FastEthernet 0/0
+no shutdown
+ip address 30.0.0.254 255.0.0.0
+ip nat inside
+exit
+interface FastEthernet 0/1
+no shutdown
+ip address 102.0.0.253 255.0.0.0
+ip nat outside
+exit
+ip route 0.0.0.0 0.0.0.0 102.0.0.254
+do wr
+access-list 100 deny ip 30.0.0.0 0.255.255.255 10.0.0.0 0.255.255.255
+access-list 100 permit ip 30.0.0.0 0.255.255.255 any
+ip nat inside source list 100 interface FastEthernet 0/1 overload
+do wr
+
+- Configuration de base de routeur3 (le routeur central) :
+
+enable
+configure terminal
+hostname Routeur3
+interface FastEthernet 0/0
+clock rate 2000000
+no shutdown
+ip address 101.0.0.254 255.0.0.0
+exit
+interface FastEthernet 0/1
+clock rate 2000000
+no shutdown
+ip address 102.0.0.254 255.0.0.0
+exit
+ip route 10.0.0.0 255.0.0.0 101.0.0.253
+ip route 30.0.0.0 255.0.0.0 102.0.0.253
+do wr
+
+
+
+- Mise en place du tunnel VPN IPsec
+
+    * Routeur 1 :
+
+crypto isakmp enable
+crypto isakmp policy 10
+encryption aes 
+authentication pre-share 
+hash sha 
+group 2 
+lifetime 86400 
+exit
+crypto isakmp key CLESECRETE address 102.0.0.253
+
+
+    * Routeur 2 :
+
+crypto isakmp enable
+crypto isakmp policy 10
+encryption aes 
+authentication pre-share 
+hash sha 
+group 2 
+lifetime 86400 
+exit
+crypto isakmp key CLESECRETE address 101.0.0.253
+
+
+- Configuration de la méthode de chiffrage des données (phase 2)
+
+    * Routeur 1 :
+
+crypto ipsec transform-set VPNLABO esp-aes esp-sha-hmac
+crypto ipsec security-association lifetime seconds 86400
+ip access-list extended VPN
+permit ip 10.0.0.0 0.255.255.255 30.0.0.0 0.255.255.255
+exit
+crypto map CARTEVPN 10 ipsec-isakmp
+match address VPN
+set peer 102.0.0.253
+set transform-set VPNLABO
+exit
+interface FastEthernet 0/1
+crypto map CARTEVPN
+do wr
+
+    * Routeur 2 :
+
+crypto ipsec transform-set VPNLABO esp-aes esp-sha-hmac
+crypto ipsec security-association lifetime seconds 86400
+ip access-list extended VPN
+permit ip 30.0.0.0 0.255.255.255 10.0.0.0 0.255.255.255
+exit
+crypto map CARTEVPN 10 ipsec-isakmp
+match address VPN
+set peer 102.0.0.253
+set transform-set VPNLABO
+exit
+interface FastEthernet 0/1
+crypto map CARTEVPN
+do wr
+
+
+
+
