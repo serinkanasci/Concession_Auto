@@ -10,6 +10,7 @@ class FabCar extends Contract {
 
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
+        const admin = [{user: 'admin', pwd: '123'},]
         const cars = [
             {
                 color: 'purple',
@@ -40,6 +41,7 @@ class FabCar extends Contract {
             await ctx.stub.putState('CAR' + i, Buffer.from(JSON.stringify(cars[i])));
             console.info('Added <--> ', cars[i]);
         }
+        await ctx.stub.putState('ADMIN', Buffer.from(JSON.stringify(admin[0])));
         console.info('============= END : Initialize Ledger ===========');
     }
 
@@ -191,6 +193,14 @@ class FabCar extends Contract {
         console.info('============= END : changeCarOwner ===========');
     }
 
+    async getAdmin(ctx) {
+        const carAsBytes = await ctx.stub.getState('ADMIN'); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`admin does not exist`);
+        }
+        console.log(carAsBytes.toString());
+        return carAsBytes.toString();
+    }
 }
 
 module.exports = FabCar;
