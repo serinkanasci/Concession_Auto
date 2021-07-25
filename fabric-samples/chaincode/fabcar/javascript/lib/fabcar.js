@@ -124,7 +124,7 @@ class FabCar extends Contract {
         console.info('============= END : changeCarOwner ===========');
     }
 
-    async changeCarInfo(ctx, carNumber, newOwner, newPrice, newDeparture, failureState, newfailureCost) {
+    async changeCarInfo(ctx, carNumber, newOwner, newPrice, newDeparture, newArrival, failureState, newfailureCost) {
         console.info('============= START : changeCarInfo ===========');
 
         const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
