@@ -11,6 +11,11 @@ export default class AddCar extends React.Component {
             model: '',
             color: '',
             owner: '',
+            price: '',
+            arrival: '',
+            depart: '',
+            failure: '',
+            failureCost: '',
             redirect: false
         }
     }
@@ -20,6 +25,12 @@ export default class AddCar extends React.Component {
     onModelChanged(e) { this.setState({ model: e.target.value }) }
     onColorChanged(e) { this.setState({ color: e.target.value }) }
     onOwnerChanged(e) { this.setState({ owner: e.target.value }) }
+    onPriceChanged(e) { this.setState({ price: e.target.value }) }
+    onArrivalChanged(e) { this.setState({ arrival: e.target.value }) }
+    onDepartChanged(e) { this.setState({ depart: e.target.value }) }
+    onFailureChanged(e) { this.setState({ failure: e.target.value }) }
+    onFailureCostChanged(e) { this.setState({ failureCost: e.target.value }) }
+
 
     onFormSubmit(e) {
         e.preventDefault();
@@ -29,7 +40,12 @@ export default class AddCar extends React.Component {
             make: this.state.make,
             model: this.state.model,
             color: this.state.color,
-            owner: this.state.owner
+            owner: this.state.owner,
+            price: this.state.price,
+            arrival: this.state.arrival,
+            depart: this.state.depart,
+            failure: this.state.failure,
+            failureCost: this.state.failureCost
         }).then(res => {
             this.props.setLoading(false);
             if (res.data.status) {
@@ -85,6 +101,36 @@ export default class AddCar extends React.Component {
                             <div className="input-field col s12">
                                 <input id="owner" type="text" className="validate" required value={this.state.owner} onChange={this.onOwnerChanged.bind(this)} />
                                 <label htmlFor="owner">Owner</label>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-field col s12">
+                                <input id="price" type="text" className="validate" required value={this.state.price} onChange={this.onPriceChanged.bind(this)} />
+                                <label htmlFor="price">Price</label>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-field col s12">
+                                <input id="arrival" type="text" className="validate" required value={this.state.arrival} onChange={this.onArrivalChanged.bind(this)} />
+                                <label htmlFor="arrival">Arrival</label>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-field col s12">
+                                <input id="depart" type="text" className="validate" required value={this.state.depart} onChange={this.onDepartChanged.bind(this)} />
+                                <label htmlFor="depart">Depart</label>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-field col s12">
+                                <input id="failure" type="text" className="validate" required value={this.state.failure} onChange={this.onFailureChanged.bind(this)} />
+                                <label htmlFor="failure">Failure</label>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="input-field col s12">
+                                <input id="failureCost" type="text" className="validate" required value={this.state.failureCost} onChange={this.onFailureCostChanged.bind(this)} />
+                                <label htmlFor="failureCost">Failure Cost</label>
                             </div>
                         </div>
                         <div className='row'>

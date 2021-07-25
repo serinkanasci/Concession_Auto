@@ -14,6 +14,11 @@ export default class ChangeOwner extends React.Component {
     }
 
     onOwnerChanged(e) { this.setState({ owner: e.target.value }) }
+    onPriceChanged(e) { this.setState({ price: e.target.value }) }
+    onArrivalChanged(e) { this.setState({ arrival: e.target.value }) }
+    onDepartChanged(e) { this.setState({ depart: e.target.value }) }
+    onFailureChanged(e) { this.setState({ failure: e.target.value }) }
+    onFailureCostChanged(e) { this.setState({ failureCost: e.target.value }) }
 
     onFormSubmit(e) {
         e.preventDefault();
@@ -65,6 +70,11 @@ export default class ChangeOwner extends React.Component {
                     <tr><td style={{width: '50%', textAlign: 'right'}}>Model :</td><td>{this.state.car.model}</td></tr>
                     <tr><td style={{width: '50%', textAlign: 'right'}}>Color :</td><td>{this.state.car.color}</td></tr>
                     <tr><td style={{width: '50%', textAlign: 'right'}}>Old Owner :</td><td>{this.state.car.owner}</td></tr>                    
+                    <tr><td style={{width: '50%', textAlign: 'right'}}>Price :</td><td>{this.state.car.price}</td></tr>                    
+                    <tr><td style={{width: '50%', textAlign: 'right'}}>Arrival :</td><td>{this.state.car.arrival}</td></tr>                    
+                    <tr><td style={{width: '50%', textAlign: 'right'}}>Depart :</td><td>{this.state.car.depart}</td></tr>    
+                    <tr><td style={{width: '50%', textAlign: 'right'}}>Failure :</td><td>{this.state.car.failure}</td></tr>  
+                    <tr><td style={{width: '50%', textAlign: 'right'}}>Failure Cost :</td><td>{this.state.car.failureCost}</td></tr>                  
                 </tbody>
             </table>
             </div>
@@ -79,8 +89,48 @@ export default class ChangeOwner extends React.Component {
                         <div className="row">
                             <input disabled id="key" type="hidden" className="validate" value={this.state.key} />
                             <div className="input-field col s12">
-                                <input id="owner" type="text" className="validate" required value={this.state.owner} onChange={this.onOwnerChanged.bind(this)} />
+                                <input id="owner" type="text" className="validate" value={this.state.owner} onChange={this.onOwnerChanged.bind(this)} />
                                 <label htmlFor="owner">New Owner</label>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <input disabled id="key" type="hidden" className="validate" value={this.state.key} />
+                            <div className="input-field col s12">
+                                <input id="price" type="text" className="validate" value={this.state.price} onChange={this.onPriceChanged.bind(this)} />
+                                <label htmlFor="price">New Price</label>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <input disabled id="key" type="hidden" className="validate" value={this.state.key} />
+                            <div className="input-field col s12">
+                                <input id="arrival" type="text" className="validate" value={this.state.arrival} onChange={this.onArrivalChanged.bind(this)} />
+                                <label htmlFor="arrival">New Arrival</label>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <input disabled id="key" type="hidden" className="validate" value={this.state.key} />
+                            <div className="input-field col s12">
+                                <input id="depart" type="text" className="validate" value={this.state.depart} onChange={this.onDepartChanged.bind(this)} />
+                                <label htmlFor="depart">New Depart</label>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <input disabled id="key" type="hidden" className="validate" value={this.state.key} />
+                            <div className="input-field col s12">
+                                <input id="failure" type="text" className="validate" value={this.state.failure} onChange={this.onFailureChanged.bind(this)} />
+                                <label htmlFor="failure">New Failure</label>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <input disabled id="key" type="hidden" className="validate" value={this.state.key} />
+                            <div className="input-field col s12">
+                                <input id="failureCost" type="text" className="validate" value={this.state.failureCost} onChange={this.onFailureCostChanged.bind(this)} />
+                                <label htmlFor="failureCost">New Failure Cost</label>
                             </div>
                         </div>
                         
