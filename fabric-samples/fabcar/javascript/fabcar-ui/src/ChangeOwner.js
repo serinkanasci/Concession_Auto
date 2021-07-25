@@ -83,7 +83,7 @@ export default class ChangeOwner extends React.Component {
             <div>
                 <h4>Old Information</h4>
                 {info}
-                <h4>Change Owner</h4>
+                <h4>Change Information</h4>
                 <div className="row">
                     <form className="col s12" onSubmit={this.onFormSubmit.bind(this)}>
                         <div className="row">
