@@ -11,7 +11,7 @@ class FabCar extends Contract {
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
         const admin = {user: 'admin', pwd: '123'}
-        const number = {benefit: '0', sold: '0'}
+        const number = {benefit: '125', sold: '156'}
         const cars = [
             {
                 color: 'purple',
@@ -124,6 +124,27 @@ class FabCar extends Contract {
         console.info('============= END : changeCarOwner ===========');
     }
 
+    async changeCarInfo(ctx, carNumber, newOwner, newPrice, newDeparture, failureState, newfailureCost) {
+        console.info('============= START : changeCarInfo ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+        const car = JSON.parse(carAsBytes.toString());
+        car.owner = newOwner;
+        car.price = newPrice;
+        car.arrival = newArrival;
+        car.departure = newDeparture;
+        car.failure = failureState;
+        const cost = parseInt(car.failureCost) + parseInt(newfailureCost)
+        const costStr = cost.toString()
+        car.failureCost = costStr
+
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : changeCarInfo ===========');
+    }
+    
     async changeCarPrice(ctx, carNumber, newPrice) {
         console.info('============= START : changeCarPrice ===========');
 
