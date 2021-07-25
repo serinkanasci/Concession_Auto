@@ -33,6 +33,11 @@ export default class AllCars extends React.Component {
                 <td>{car.Record.model}</td>
                 <td>{car.Record.color}</td>
                 <td>{car.Record.owner}</td>
+                <td>{car.Record.price}</td>
+                <td>{car.Record.arrival}</td>
+                <td>{car.Record.depart}</td>
+                <td>{car.Record.failure}</td>
+                <td>{car.Record.failureCost}</td>
                 <td>
                     <Link to={'/change-owner/' + car.Key} className="waves-effect waves-light btn light-blue darken-3"><i className="material-icons">edit</i></Link>
                 </td>
@@ -49,6 +54,11 @@ export default class AllCars extends React.Component {
                             <th>Model</th>
                             <th>Color</th>
                             <th>Owner</th>
+                            <th>Price</th>
+                            <th>Arrival</th>
+                            <th>Depart</th>
+                            <th>Failure</th>
+                            <th>Failure Cost</th>
                             <th style={{width: 100}}>Action</th>
                         </tr>
                     </thead>
