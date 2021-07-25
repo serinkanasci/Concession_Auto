@@ -10,7 +10,8 @@ class FabCar extends Contract {
 
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
-        const admin = [{user: 'admin', pwd: '123'},]
+        const admin = {user: 'admin', pwd: '123'}
+        const number = {benefit: '0', sold: '0'}
         const cars = [
             {
                 color: 'purple',
@@ -19,9 +20,10 @@ class FabCar extends Contract {
                 owner: 'Michel',
                 price: '900000',
                 arrival: '10/10/10',
-                depart: '20/20/20',
+                departure: '20/20/20',
                 failure: '0',
                 failureCost: '0',
+                sold: '0',
             },
             {
                 color: 'white',
@@ -30,9 +32,10 @@ class FabCar extends Contract {
                 owner: 'Aarav',
                 price: '100000',
                 arrival: '10/10/10',
-                depart: '20/20/20',
+                departure: '20/20/20',
                 failure: '0',
                 failureCost: '0',
+                sold: '0',
             },
         ];
 
@@ -41,7 +44,8 @@ class FabCar extends Contract {
             await ctx.stub.putState('CAR' + i, Buffer.from(JSON.stringify(cars[i])));
             console.info('Added <--> ', cars[i]);
         }
-        await ctx.stub.putState('ADMIN', Buffer.from(JSON.stringify(admin[0])));
+        await ctx.stub.putState('ADMIN', Buffer.from(JSON.stringify(admin)));
+        await ctx.stub.putState('NUMBER', Buffer.from(JSON.stringify(number)));
         console.info('============= END : Initialize Ledger ===========');
     }
 
@@ -54,7 +58,7 @@ class FabCar extends Contract {
         return carAsBytes.toString();
     }
 
-    async createCar(ctx, carNumber, make, model, color, owner, price, arrival, depart, failure, failureCost) {
+    async createCar(ctx, carNumber, make, model, color, owner, price, arrival, departure, failure, failureCost) {
         console.info('============= START : Create Car ===========');
 
         const car = {
@@ -65,7 +69,7 @@ class FabCar extends Contract {
             owner,
             price,
             arrival,
-            depart,
+            departure,
             failure,
             failureCost,
         };
@@ -121,7 +125,7 @@ class FabCar extends Contract {
     }
 
     async changeCarPrice(ctx, carNumber, newPrice) {
-        console.info('============= START : changeCarOwner ===========');
+        console.info('============= START : changeCarPrice ===========');
 
         const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
         if (!carAsBytes || carAsBytes.length === 0) {
@@ -131,11 +135,11 @@ class FabCar extends Contract {
         car.price = newPrice;
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
-        console.info('============= END : changeCarOwner ===========');
+        console.info('============= END : changeCarPrice ===========');
     }
 
     async changeCarArrival(ctx, carNumber, newArrival) {
-        console.info('============= START : changeCarOwner ===========');
+        console.info('============= START : changeCarArrival ===========');
 
         const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
         if (!carAsBytes || carAsBytes.length === 0) {
@@ -145,25 +149,25 @@ class FabCar extends Contract {
         car.arrival = newArrival;
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
-        console.info('============= END : changeCarOwner ===========');
+        console.info('============= END : changeCarArrival ===========');
     }
 
-    async changeCarDepart(ctx, carNumber, newDepart) {
-        console.info('============= START : changeCarOwner ===========');
+    async changeCarDeparture(ctx, carNumber, newDeparture) {
+        console.info('============= START : changeCarDeparture ===========');
 
         const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
         if (!carAsBytes || carAsBytes.length === 0) {
             throw new Error(`${carNumber} does not exist`);
         }
         const car = JSON.parse(carAsBytes.toString());
-        car.depart = newDepart;
+        car.departure = newDeparture;
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
-        console.info('============= END : changeCarOwner ===========');
+        console.info('============= END : changeCarDeparture ===========');
     }
 
     async changeCarfailure(ctx, carNumber) {
-        console.info('============= START : changeCarOwner ===========');
+        console.info('============= START : changeCarfailure ===========');
 
         const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
         if (!carAsBytes || carAsBytes.length === 0) {
@@ -173,11 +177,11 @@ class FabCar extends Contract {
         car.failure = '1';
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
-        console.info('============= END : changeCarOwner ===========');
+        console.info('============= END : changeCarfailure ===========');
     }
 
     async changeCarRepair(ctx, carNumber, newfailureCost) {
-        console.info('============= START : changeCarOwner ===========');
+        console.info('============= START : changeCarRepair ===========');
 
         const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
         if (!carAsBytes || carAsBytes.length === 0) {
@@ -190,16 +194,56 @@ class FabCar extends Contract {
         car.failureCost = costStr
 
         await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
-        console.info('============= END : changeCarOwner ===========');
+        console.info('============= END : changeCarRepair ===========');
+    }
+
+    async soldCar(ctx, carNumber) {
+        console.info('============= START : changeCarRepair ===========');
+
+        const carAsBytes = await ctx.stub.getState(carNumber); // get the car from chaincode state
+        if (!carAsBytes || carAsBytes.length === 0) {
+            throw new Error(`${carNumber} does not exist`);
+        }
+
+        const car = JSON.parse(carAsBytes.toString());
+        car.sold = '1';
+
+        const numberAsBytes = await ctx.stub.getState('NUMBER');
+        if (!numberAsBytes || numberAsBytes.length === 0) {
+            throw new Error(`Number does not exist`);
+        }
+
+        const num = JSON.parse(numberAsBytes.toString());
+
+        const solded = parseInt(car.price) + parseInt(num.sold)
+        const soldedStr = solded.toString()
+        num.sold = soldedStr
+
+        const benef =  (parseInt(num.benefit) + parseInt(car.price)) - parseInt(car.failureCost)
+        const benefStr = benef.toString()
+        num.benefit = benefStr
+
+
+        await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+        console.info('============= END : changeCarRepair ===========');
     }
 
     async getAdmin(ctx) {
-        const carAsBytes = await ctx.stub.getState('ADMIN'); // get the car from chaincode state
-        if (!carAsBytes || carAsBytes.length === 0) {
-            throw new Error(`admin does not exist`);
+        const adminAsBytes = await ctx.stub.getState('ADMIN'); // get the car from chaincode state
+        if (!adminAsBytes || adminAsBytes.length === 0) {
+            throw new Error(`Admin does not exist`);
         }
-        console.log(carAsBytes.toString());
-        return carAsBytes.toString();
+        console.log(adminAsBytes.toString());
+        return adminAsBytes.toString();
+    }
+
+    async getNumber(ctx) {
+        const numberAsBytes = await ctx.stub.getState('NUMBER'); // get the car from chaincode state
+        if (!numberAsBytes || numberAsBytes.length === 0) {
+            throw new Error(`Number does not exist`);
+        }
+        console.log(numberAsBytes.toString());
+        return numberAsBytes.toString();
     }
 }
 
