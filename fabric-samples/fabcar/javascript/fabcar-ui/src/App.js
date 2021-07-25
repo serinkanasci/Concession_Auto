@@ -19,19 +19,19 @@ class App extends React.Component {
 	render() {
 		return (
 			<BrowserRouter>
-				<nav className='light-blue darken-3'>
+				<nav className='light-red darken-3'>
 					<div className="nav-wrapper">
 						<div className='container'>
 							{/* <Link to='/' className="left brand-logo">My Cars</Link> */}
 							<div className="brand-logo right hide-on-med-and-down">
-								Sales : {this.state.sales}€ Benefice : {this.state.benefice}€
+								Sales : {this.state.sales}€ Benefits : {this.state.benefits}€
 							</div>
 							<ul id="nav-mobile" className="hide-on-med-and-down">
-								<li><Link to='/'><i className='material-icons left'>directions_car</i>All Cars</Link></li>
-								<li><Link to='/add'><i className="material-icons left">add_circle_outline</i>Add Car</Link></li>
+								<li><Link to='/'>All Cars</Link></li>
+								<li><Link to='/add'>Add Car</Link></li>
 							</ul>
 						</div>
-						{ this.state.isLoading ? <div className="progress light-blue lighten-3"><div className="indeterminate light-blue darken-4"></div></div> : null }
+						{ this.state.isLoading ? <div className="progress light-red lighten-3"><div className="indeterminate light-red darken-4"></div></div> : null }
 					</div>
 				</nav>
 				<div className='container'>

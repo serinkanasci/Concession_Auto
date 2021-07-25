@@ -136,8 +136,8 @@ export default class ChangeOwner extends React.Component {
                         
                         <div className='row'>
                             <div className="input-field col s12">
-                                <button className="btn waves-effect waves-light light-blue darken-3" type="submit" name="action">Submit
-                                    <i className="material-icons right">send</i>
+                                <button className="btn waves-effect waves-light light-red darken-3" type="submit" name="action">Submit
+                                    send
                                 </button>
                             </div>
                         </div>
