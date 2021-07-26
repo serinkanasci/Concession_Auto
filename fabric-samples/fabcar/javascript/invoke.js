@@ -44,7 +44,8 @@ async function main() {
 
         //await contract.submitTransaction('changeCarfailure', 'CAR1');
         //await contract.submitTransaction('changeCarRepair', 'CAR1', '1999');
-        await contract.submitTransaction('soldCar', 'CAR1');
+        await contract.submitTransaction('changeCarInfo', 'CAR0', 'blue', '963258741', '86/96/74', '10/10/50', '0', '0');
+        //await contract.submitTransaction('soldCar', 'CAR1');
         
         console.log('Transaction has been submitted');
 

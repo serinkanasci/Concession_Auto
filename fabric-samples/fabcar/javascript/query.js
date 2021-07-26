@@ -39,9 +39,9 @@ async function main() {
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
         //await contract.submitTransaction('changeCarOwner', 'CAR3', 'azedf');
-        //const result = await contract.evaluateTransaction('getNumber');
-        //const result = await contract.evaluateTransaction('getAdmin');
         const result = await contract.evaluateTransaction('getNumber');
+        //const result = await contract.evaluateTransaction('getAdmin');
+        //const result = await contract.evaluateTransaction('queryCar', 'CAR0');
         console.log(`Transaction has been evaluated, result is: ${result}`);
 
     } catch (error) {

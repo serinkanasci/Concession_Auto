@@ -119,12 +119,34 @@ app.put('/cars', async (req, res) => {
     await gateway.connect(ccpPath, { wallet, identity: 'user1', discovery: { enabled: true, asLocalhost: true } });
     const network = await gateway.getNetwork('mychannel');
     const contract = network.getContract('fabcar');
-    await contract.submitTransaction('changeCarOwner', req.body.key, req.body.owner, req.body.price, req.body.arrival, req.body.depart, req.body.failure, req.body.failureCost);
-    res.json({status: true, message: 'Transaction (change car owner) has been submitted.'})
+    await contract.submitTransaction('changeCarInfo', req.body.key, req.body.owner, req.body.price, req.body.arrival, req.body.depart, req.body.failure, req.body.failureCost);
+    res.json({status: true, message: 'Transaction (change car info) has been submitted.'})
   } catch (err) {
     res.json({status: false, error: err});
   }
 });
+
+app.get('/companyInfo', async (req, res) => {
+  try {
+    const walletPath = path.join(process.cwd(), 'wallet');
+    const wallet = new FileSystemWallet(walletPath);
+    const userExists = await wallet.exists('user1');
+    if (!userExists) {
+      res.json({status: false, error: {message: 'User not exist in the wallet'}});
+      return;
+    }
+
+    const gateway = new Gateway();
+    await gateway.connect(ccpPath, { wallet, identity: 'user1', discovery: { enabled: true, asLocalhost: true } });
+    const network = await gateway.getNetwork('mychannel');
+    const contract = network.getContract('fabcar');
+    const result = await contract.evaluateTransaction('getNumber');
+    res.json({status: true, cars: JSON.parse(result.toString())});
+  } catch (err) {
+    res.json({status: false, error: err});
+  }
+});
+
 
 app.listen(3000, () => {
   console.log('REST Server listening on port 3000');
