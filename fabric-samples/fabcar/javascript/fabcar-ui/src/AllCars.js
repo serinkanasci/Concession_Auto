@@ -39,17 +39,17 @@ export default class AllCars extends React.Component {
                 <td>{car.Record.failure}</td>
                 <td>{car.Record.failureCost}</td>
                 <td>
-                    <Link to={'/change-owner/' + car.Key} className="waves-effect waves-light btn light-blue darken-3"><i className="material-icons">edit</i></Link>
+                    <Link to={'/change-owner/' + car.Key} className="btn">edit</Link>
                 </td>
             </tr>
         })
         return (
             <div>
-                <h4>All Cars</h4>
+                <h4>Cars : </h4>
                 <table className='striped responsive-table centered'>
                     <thead>
                         <tr>
-                            <th>Key</th>
+                            <th>ID</th>
                             <th>Make</th>
                             <th>Model</th>
                             <th>Color</th>
