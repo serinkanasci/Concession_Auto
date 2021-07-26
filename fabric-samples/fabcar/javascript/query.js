@@ -42,8 +42,7 @@ async function main() {
         //const result = await contract.evaluateTransaction('getNumber');
         //const result = await contract.evaluateTransaction('getAdmin');
         const result = await contract.evaluateTransaction('getNumber');
-        const a = result
-        console.log(`Transaction has been evaluated, result is: ${a.sold}`);
+        console.log(`Transaction has been evaluated, result is: ${result}`);
 
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);

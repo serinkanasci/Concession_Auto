@@ -64,7 +64,12 @@ app.post('/cars', async (req, res) => {
       (typeof req.body.make === 'undefined' || req.body.make === '') ||
       (typeof req.body.model === 'undefined' || req.body.model === '') ||
       (typeof req.body.color === 'undefined' || req.body.color === '') ||
-      (typeof req.body.owner === 'undefined' || req.body.owner === '')) {
+      (typeof req.body.owner === 'undefined' || req.body.owner === '') ||
+      (typeof req.body.price === 'undefined' || req.body.price === '') ||
+      (typeof req.body.arrival === 'undefined' || req.body.arrival === '') ||
+      (typeof req.body.depart === 'undefined' || req.body.depart === '') ||
+      (typeof req.body.failure === 'undefined' || req.body.failure === '') ||
+      (typeof req.body.failureCost === 'undefined' || req.body.failureCost === '')) {
     res.json({status: false, error: {message: 'Missing body.'}});
     return;
   }
@@ -82,7 +87,7 @@ app.post('/cars', async (req, res) => {
     await gateway.connect(ccpPath, { wallet, identity: 'user1', discovery: { enabled: true, asLocalhost: true } });
     const network = await gateway.getNetwork('mychannel');
     const contract = network.getContract('fabcar');
-    await contract.submitTransaction('createCar', req.body.key, req.body.make, req.body.model, req.body.color, req.body.owner);
+    await contract.submitTransaction('createCar', req.body.key, req.body.make, req.body.model, req.body.color, req.body.owner, req.body.price, req.body.arrival, req.body.depart, req.body.failure, req.body.failureCost);
     res.json({status: true, message: 'Transaction (create car) has been submitted.'})
   } catch (err) {
     res.json({status: false, error: err});
@@ -91,7 +96,12 @@ app.post('/cars', async (req, res) => {
 
 app.put('/cars', async (req, res) => {
   if ((typeof req.body.key === 'undefined' || req.body.key === '') ||
-      (typeof req.body.owner === 'undefined' || req.body.owner === '')) {
+      (typeof req.body.owner === 'undefined' || req.body.owner === '') ||
+      (typeof req.body.price === 'undefined' || req.body.price === '') ||
+      (typeof req.body.arrival === 'undefined' || req.body.arrival === '') ||
+      (typeof req.body.depart === 'undefined' || req.body.depart === '') ||
+      (typeof req.body.failure === 'undefined' || req.body.failure === '') ||
+      (typeof req.body.failureCost === 'undefined' || req.body.failureCost === '')) {
     res.json({status: false, error: {message: 'Missing body.'}});
     return;
   }
@@ -109,7 +119,7 @@ app.put('/cars', async (req, res) => {
     await gateway.connect(ccpPath, { wallet, identity: 'user1', discovery: { enabled: true, asLocalhost: true } });
     const network = await gateway.getNetwork('mychannel');
     const contract = network.getContract('fabcar');
-    await contract.submitTransaction('changeCarOwner', req.body.key, req.body.owner);
+    await contract.submitTransaction('changeCarOwner', req.body.key, req.body.owner, req.body.price, req.body.arrival, req.body.depart, req.body.failure, req.body.failureCost);
     res.json({status: true, message: 'Transaction (change car owner) has been submitted.'})
   } catch (err) {
     res.json({status: false, error: err});
